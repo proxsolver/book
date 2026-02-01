@@ -1,13 +1,16 @@
-// Get current KST time
+// Get current KST time as Date object (in UTC)
 export function getKSTDate() {
   const now = new Date()
   return new Date(now.getTime() + 9 * 60 * 60 * 1000)
 }
 
 // Get KST today at midnight (in UTC)
+// KST midnight = UTC 15:00 previous day
 export function getKSTToday() {
   const kst = getKSTDate()
-  kst.setUTCHours(0, 0, 0, 0)
+  // Set to KST midnight by setting UTC hours to 15 on the previous day
+  kst.setUTCHours(15, 0, 0, 0)
+  kst.setUTCDate(kst.getUTCDate() - 1)
   return kst
 }
 
@@ -21,21 +24,23 @@ export function getKSTTomorrow() {
 
 // Get KST date as YYYY-MM-DD string
 export function getKSTDateOnly() {
-  return getKSTToday().toISOString().split('T')[0]
+  const kst = getKSTDate()
+  return kst.toISOString().split('T')[0]
 }
 
 // Parse KST date string (YYYY-MM-DD) to UTC Date
+// Input is KST date, output is UTC Date representing KST midnight
 export function parseKSTDate(dateStr: string) {
   const [year, month, day] = dateStr.split('-').map(Number)
-  // KST midnight = UTC 15:00 previous day, but we use setUTCHours(0,0,0,0) on the shifted date
-  const kstDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
-  // Shift by +9 hours to get KST time, then set to midnight
-  kstDate.setTime(kstDate.getTime() + 9 * 60 * 60 * 1000)
-  kstDate.setUTCHours(0, 0, 0, 0)
-  return kstDate
+  // KST midnight (00:00) = UTC 15:00 previous day
+  const utcDate = new Date(Date.UTC(year, month - 1, day, 15, 0, 0))
+  // Subtract 1 day to get correct UTC date
+  utcDate.setUTCDate(utcDate.getUTCDate() - 1)
+  return utcDate
 }
 
 export function formatKSTDate(date: Date) {
+  // Convert UTC date to KST for formatting
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000)
   const days = ['일', '월', '화', '수', '목', '금', '토']
   const year = String(kstDate.getUTCFullYear()).slice(-2)
