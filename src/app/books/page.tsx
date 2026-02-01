@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 interface Book {
     id: string
@@ -46,7 +45,7 @@ export default function BooksPage() {
 
     async function handleToggleActive(bookId: string, currentStatus: boolean) {
         try {
-            const res = await fetch(`/api/books/${bookId}`, {
+            const res = await fetch('/api/books/' + bookId, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isActive: !currentStatus }),
@@ -65,12 +64,12 @@ export default function BooksPage() {
     }
 
     async function handleDelete(bookId: string, title: string) {
-        if (!confirm(`"${title}" 책을 삭제하시겠습니까?\n모든 독서 기록도 함께 삭제됩니다.`)) {
+        if (!confirm('"' + title + '" 책을 삭제하시겠습니까?\\n모든 독서 기록도 함께 삭제됩니다.')) {
             return
         }
 
         try {
-            const res = await fetch(`/api/books/${bookId}`, { method: 'DELETE' })
+            const res = await fetch('/api/books/' + bookId, { method: 'DELETE' })
 
             if (res.ok) {
                 setBooks(prev => prev.filter(book => book.id !== bookId))
@@ -101,17 +100,20 @@ export default function BooksPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
             <div className="max-w-4xl mx-auto">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-2xl font-bold text-white">📚 책 관리</h1>
+                    <button
+                        onClick={() => router.push('/books/new')}
+                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-lg"
+                    >
+                        + 책 추가
+                    </button>
+                </div>
 
-                {/* Book List */}
                 {books.length === 0 ? (
                     <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 text-center border border-white/20">
                         <p className="text-white/70 mb-4">등록된 책이 없습니다.</p>
-                    <button
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
-                    >
-                        ⚙️ 설정
-                    </button>
-                                            <button
+                        <button
                             onClick={() => router.push('/books/new')}
                             className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg"
                         >
@@ -127,8 +129,7 @@ export default function BooksPage() {
                             return (
                                 <div
                                     key={book.id}
-                                    className={`bg-white/10 backdrop-blur-xl rounded-2xl p-6 border transition-all ${book.isActive ? 'border-white/20' : 'border-white/10 opacity-60'
-                                        }`}
+                                    className={book.isActive ? 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 border-white/20 transition-all' : 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 border-white/10 opacity-60 transition-all'}
                                 >
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex-1">
@@ -148,47 +149,27 @@ export default function BooksPage() {
                                         </div>
                                     </div>
 
-                                    {/* Progress bar */}
                                     <div className="w-full bg-white/10 rounded-full h-2 mb-4">
                                         <div
-                                            className="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full transition-all duration-500"
-                                            style={{ width: `${progress}%` }}
+                                            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
+                                            style={{ width: progress + '%' }}
                                         />
                                     </div>
 
-                                    {/* Actions */}
                                     <div className="flex gap-2 justify-end">
-                    <button
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
-                    >
-                        ⚙️ 설정
-                    </button>
-                                                            <button
+                                        <button
                                             onClick={() => handleToggleActive(book.id, book.isActive)}
-                                            className={`px-4 py-2 rounded-lg text-sm transition ${book.isActive
-                                                    ? 'bg-white/10 text-white/70 hover:bg-white/20'
-                                                    : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
-                                                }`}
+                                            className={book.isActive ? 'px-4 py-2 rounded-lg text-sm bg-white/10 text-white/70 hover:bg-white/20 transition' : 'px-4 py-2 rounded-lg text-sm bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition'}
                                         >
                                             {book.isActive ? '비활성화' : '활성화'}
                                         </button>
-                    <button
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
-                    >
-                        ⚙️ 설정
-                    </button>
-                                                            <button
-                                            onClick={() => router.push(`/books/${book.id}/edit`)}
+                                        <button
+                                            onClick={() => router.push('/books/' + book.id + '/edit')}
                                             className="px-4 py-2 bg-white/10 text-white/70 hover:bg-white/20 rounded-lg text-sm transition"
                                         >
                                             수정
                                         </button>
-                    <button
-                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
-                    >
-                        ⚙️ 설정
-                    </button>
-                                                            <button
+                                        <button
                                             onClick={() => handleDelete(book.id, book.title)}
                                             className="px-4 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg text-sm transition"
                                         >

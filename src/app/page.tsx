@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, useCallback } from 'react'
 
@@ -27,7 +27,7 @@ export default function HomePage() {
 
   const fetchCertification = useCallback(async () => {
     try {
-      const res = await fetch(`/api/certification?includeMemo=${includeMemo}`)
+      const res = await fetch('/api/certification?includeMemo=' + includeMemo)
       const data = await res.json()
       if (data.text) {
         setCertText(data.text)
@@ -50,9 +50,8 @@ export default function HomePage() {
         const data = await res.json()
         setBooks(data)
 
-        // Check today's reading status
         const today = new Date().toISOString().split('T')[0]
-        const res2 = await fetch(`/api/readings?date=${today}`)
+        const res2 = await fetch('/api/readings?date=' + today)
         const logs = await res2.json()
         const status: Record<string, boolean> = {}
         const memoData: Record<string, string> = {}
@@ -105,7 +104,6 @@ export default function HomePage() {
     }
   }
 
-  // 오늘 읽어야 할 페이지 계산
   function getTodayPages(book: Book) {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -125,36 +123,20 @@ export default function HomePage() {
     )
   }
 
-  if (status === 'unauthenticated') {
-    return null
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-
-        {/* Today's Reading */}
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-white">오늘 읽을 책</h2>
             <div className="flex gap-2">
-            <button
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
-            >
-              ⚙️ 설정
-            </button>
-                          <button
+              <button
                 onClick={() => router.push('/books')}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
               >
                 📋 책 관리
               </button>
-            <button
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
-            >
-              ⚙️ 설정
-            </button>
-                          <button
+              <button
                 onClick={() => router.push('/books/new')}
                 className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-lg"
               >
@@ -177,8 +159,7 @@ export default function HomePage() {
                 return (
                   <div
                     key={book.id}
-                    className={`bg-white/10 backdrop-blur-xl rounded-2xl p-6 border transition-all ${isCompleted ? 'border-emerald-500/50 bg-emerald-500/10' : 'border-white/20'
-                      }`}
+                    className={isCompleted ? 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 border-emerald-500/50 bg-emerald-500/10 transition-all' : 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 border-white/20 transition-all'}
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
@@ -194,15 +175,13 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    {/* Progress bar */}
                     <div className="w-full bg-white/10 rounded-full h-2 mb-4">
                       <div
-                        className="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${progress}%` }}
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
+                        style={{ width: progress + '%' }}
                       />
                     </div>
 
-                    {/* Memo input */}
                     <div className="mb-4">
                       <input
                         type="text"
@@ -213,19 +192,10 @@ export default function HomePage() {
                       />
                     </div>
 
-                    {/* Complete button */}
-            <button
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
-            >
-              ⚙️ 설정
-            </button>
-                                <button
+                    <button
                       onClick={() => handleReadingComplete(book.id, startPage, endPage)}
                       disabled={isCompleted}
-                      className={`w-full py-3 rounded-lg font-semibold transition-all ${isCompleted
-                        ? 'bg-emerald-500/20 text-emerald-400 cursor-default'
-                        : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg'
-                        }`}
+                      className={isCompleted ? 'w-full py-3 rounded-lg font-semibold bg-emerald-500/20 text-emerald-400 cursor-default transition-all' : 'w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg transition-all'}
                     >
                       {isCompleted ? '✓ 완료!' : '독서 완료'}
                     </button>
@@ -236,7 +206,6 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Certification Text */}
         <section className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-white">인증 텍스트</h2>
@@ -245,7 +214,7 @@ export default function HomePage() {
                 type="checkbox"
                 checked={includeMemo}
                 onChange={e => setIncludeMemo(e.target.checked)}
-                className="w-4 h-4 rounded accent-pink-500"
+                className="w-4 h-4 rounded accent-blue-500"
               />
               메모 포함
             </label>
@@ -255,17 +224,9 @@ export default function HomePage() {
             {certText || '책을 추가하고 독서를 완료하면 인증 텍스트가 생성됩니다.'}
           </pre>
 
-            <button
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
-            >
-              ⚙️ 설정
-            </button>
-                      <button
+          <button
             onClick={copyToClipboard}
-            className={`w-full py-3 rounded-lg font-semibold transition-all ${copied
-              ? 'bg-emerald-500 text-white'
-              : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg'
-              }`}
+            className={copied ? 'w-full py-3 rounded-lg font-semibold bg-emerald-500 text-white transition-all' : 'w-full py-3 rounded-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg transition-all'}
           >
             {copied ? '✓ 복사됨!' : '📋 클립보드에 복사'}
           </button>
