@@ -92,14 +92,14 @@ export default function BooksPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
                 <div className="text-white text-xl">로딩 중...</div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 py-8 px-4">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <header className="flex justify-between items-center mb-8">
@@ -115,7 +115,7 @@ export default function BooksPage() {
                     </button>
                                         <button
                         onClick={() => router.push('/books/new')}
-                        className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition shadow-lg"
+                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-lg"
                     >
                         + 책 추가
                     </button>
@@ -133,7 +133,7 @@ export default function BooksPage() {
                     </button>
                                             <button
                             onClick={() => router.push('/books/new')}
-                            className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg shadow-lg"
+                            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg"
                         >
                             첫 번째 책 추가하기
                         </button>
@@ -163,7 +163,7 @@ export default function BooksPage() {
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-2xl font-bold text-pink-400">{progress}%</span>
+                                            <span className="text-2xl font-bold text-blue-400">{progress}%</span>
                                             <p className="text-white/50 text-xs">진행률</p>
                                         </div>
                                     </div>
@@ -188,7 +188,7 @@ export default function BooksPage() {
                                             onClick={() => handleToggleActive(book.id, book.isActive)}
                                             className={`px-4 py-2 rounded-lg text-sm transition ${book.isActive
                                                     ? 'bg-white/10 text-white/70 hover:bg-white/20'
-                                                    : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                                                    : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
                                                 }`}
                                         >
                                             {book.isActive ? '비활성화' : '활성화'}

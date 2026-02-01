@@ -44,7 +44,7 @@ export default function NewBookPage() {
     const today = new Date().toISOString().split('T')[0]
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 py-8 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
             <div className="w-full max-w-md p-8 space-y-6 bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
                 <div className="flex items-center gap-4">
                     <Link href="/" className="text-white/70 hover:text-white text-2xl">←</Link>
@@ -67,7 +67,7 @@ export default function NewBookPage() {
                             name="title"
                             type="text"
                             required
-                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition"
+                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="서양미술사"
                         />
                     </div>
@@ -82,7 +82,7 @@ export default function NewBookPage() {
                             type="date"
                             required
                             defaultValue={today}
-                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition [color-scheme:dark]"
+                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition [color-scheme:dark]"
                         />
                     </div>
 
@@ -98,7 +98,7 @@ export default function NewBookPage() {
                                 required
                                 min={1}
                                 defaultValue={1}
-                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition"
+                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             />
                         </div>
 
@@ -112,7 +112,7 @@ export default function NewBookPage() {
                                 type="number"
                                 required
                                 min={1}
-                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition"
+                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                                 placeholder="300"
                             />
                         </div>
@@ -125,7 +125,7 @@ export default function NewBookPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                        className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-transparent disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                     >
                         {loading ? '추가 중...' : '책 추가'}
                     </button>

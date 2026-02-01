@@ -119,7 +119,7 @@ export default function HomePage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
         <div className="text-white text-xl">로딩 중...</div>
       </div>
     )
@@ -130,7 +130,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
@@ -177,7 +177,7 @@ export default function HomePage() {
             </button>
                           <button
                 onClick={() => router.push('/books/new')}
-                className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition shadow-lg"
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-lg"
               >
                 + 책 추가
               </button>
@@ -198,19 +198,19 @@ export default function HomePage() {
                 return (
                   <div
                     key={book.id}
-                    className={`bg-white/10 backdrop-blur-xl rounded-2xl p-6 border transition-all ${isCompleted ? 'border-green-500/50 bg-green-500/10' : 'border-white/20'
+                    className={`bg-white/10 backdrop-blur-xl rounded-2xl p-6 border transition-all ${isCompleted ? 'border-emerald-500/50 bg-emerald-500/10' : 'border-white/20'
                       }`}
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                           {book.title}
-                          {isCompleted && <span className="text-green-400">✓</span>}
+                          {isCompleted && <span className="text-emerald-400">✓</span>}
                         </h3>
                         <p className="text-white/60 text-sm">{bookDays}일차 · {startPage}-{endPage}p</p>
                       </div>
                       <div className="text-right">
-                        <span className="text-2xl font-bold text-pink-400">{progress}%</span>
+                        <span className="text-2xl font-bold text-blue-400">{progress}%</span>
                         <p className="text-white/50 text-xs">진행률</p>
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export default function HomePage() {
                         placeholder="메모 (선택사항)"
                         value={memos[book.id] || ''}
                         onChange={e => setMemos(prev => ({ ...prev, [book.id]: e.target.value }))}
-                        className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
+                        className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                       />
                     </div>
 
@@ -245,8 +245,8 @@ export default function HomePage() {
                       onClick={() => handleReadingComplete(book.id, startPage, endPage)}
                       disabled={isCompleted}
                       className={`w-full py-3 rounded-lg font-semibold transition-all ${isCompleted
-                        ? 'bg-green-500/20 text-green-400 cursor-default'
-                        : 'bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 shadow-lg'
+                        ? 'bg-emerald-500/20 text-emerald-400 cursor-default'
+                        : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg'
                         }`}
                     >
                       {isCompleted ? '✓ 완료!' : '독서 완료'}
@@ -286,8 +286,8 @@ export default function HomePage() {
                       <button
             onClick={copyToClipboard}
             className={`w-full py-3 rounded-lg font-semibold transition-all ${copied
-              ? 'bg-green-500 text-white'
-              : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg'
+              ? 'bg-emerald-500 text-white'
+              : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-indigo-600 hover:to-purple-700 shadow-lg'
               }`}
           >
             {copied ? '✓ 복사됨!' : '📋 클립보드에 복사'}

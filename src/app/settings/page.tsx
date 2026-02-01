@@ -99,14 +99,14 @@ export default function SettingsPage() {
 
     if (status === 'loading') {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
                 <div className="text-white text-xl">로딩 중...</div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 py-8">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8">
             <div className="max-w-2xl mx-auto px-4">
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-white mb-2">⚙️ 설정</h1>
@@ -114,11 +114,11 @@ export default function SettingsPage() {
                 </div>
 
                 {message && (
-                    <div className={\`mb-6 p-4 rounded-lg border \${
+                    <div className={`mb-6 p-4 rounded-lg border \${
                         message.includes('실패') || message.includes('일치하지 않') || message.includes('6자')
                             ? 'bg-red-500/20 border-red-500/30 text-red-300'
-                            : 'bg-green-500/20 border-green-500/30 text-green-300'
-                    }\`}>
+                            : 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300'
+                    }`}>
                         {message}
                     </div>
                 )}
@@ -132,13 +132,13 @@ export default function SettingsPage() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-white/80 mb-2">이름</label>
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-white/80 mb-2">독서습관 시작일 📅</label>
-                            <input type="date" value={habitStartDate} onChange={(e) => setHabitStartDate(e.target.value)} required className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500 [color-scheme:dark]" />
+                            <input type="date" value={habitStartDate} onChange={(e) => setHabitStartDate(e.target.value)} required className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 [color-scheme:dark]" />
                         </div>
-                        <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-pink-600 hover:to-purple-700 disabled:opacity-50">{loading ? '저장 중...' : '프로필 저장'}</button>
+                        <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-50">{loading ? '저장 중...' : '프로필 저장'}</button>
                     </form>
                 </div>
 
@@ -147,17 +147,17 @@ export default function SettingsPage() {
                     <form onSubmit={handlePasswordUpdate} className="space-y-5">
                         <div>
                             <label className="block text-sm font-medium text-white/80 mb-2">현재 비밀번호</label>
-                            <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                            <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-white/80 mb-2">새 비밀번호</label>
-                            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} minLength={6} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} minLength={6} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-white/80 mb-2">새 비밀번호 확인</label>
-                            <input type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} minLength={6} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                            <input type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} minLength={6} className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         </div>
-                        <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50">{loading ? '변경 중...' : '비밀번호 변경'}</button>
+                        <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50">{loading ? '변경 중...' : '비밀번호 변경'}</button>
                     </form>
                 </div>
 
