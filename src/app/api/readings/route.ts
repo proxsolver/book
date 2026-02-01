@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
+import { getKSTToday, getKSTTomorrow, getKSTDateOnly } from '@/lib/date'
 
-// 독서 기록 조회
 export async function GET(request: Request) {
     const session = await getServerSession(authOptions)
 
@@ -54,7 +54,6 @@ export async function GET(request: Request) {
     }
 }
 
-// 독서 기록 추가
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions)
 
@@ -72,7 +71,6 @@ export async function POST(request: Request) {
             )
         }
 
-        // Verify book ownership
         const book = await prisma.book.findFirst({
             where: { id: bookId, userId: session.user.id },
         })
@@ -84,7 +82,6 @@ export async function POST(request: Request) {
         const logDate = new Date(date)
         logDate.setHours(0, 0, 0, 0)
 
-        // Upsert: create or update if exists for same book and date
         const log = await prisma.readingLog.upsert({
             where: {
                 bookId_date: {

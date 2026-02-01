@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 
 interface Book {
   id: string
@@ -12,6 +12,13 @@ interface Book {
   totalPages: number
   isActive: boolean
   readingLogs: { id: string; date: string; startPage: number; endPage: number; memo: string | null }[]
+}
+
+function getKSTDate() {
+  const now = new Date()
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000
+  const kst = new Date(utc + 540 * 60000)
+  return kst.toISOString().split('T')[0]
 }
 
 export default function HomePage() {
@@ -24,6 +31,7 @@ export default function HomePage() {
   const [memos, setMemos] = useState<Record<string, string>>({})
   const [includeMemo, setIncludeMemo] = useState(true)
   const [copied, setCopied] = useState(false)
+  const currentDateRef = useRef<string>(getKSTDate())
 
   const fetchCertification = useCallback(async () => {
     try {
@@ -43,58 +51,69 @@ export default function HomePage() {
     }
   }, [status, router])
 
+  const fetchData = useCallback(async () => {
+    try {
+      const todayKST = getKSTDate()
+
+      const [booksRes, readingsRes, certRes] = await Promise.all([
+        fetch('/api/books'),
+        fetch('/api/readings?date=' + todayKST),
+        fetch('/api/certification?includeMemo=' + includeMemo)
+      ])
+
+      const [booksData, readingsData, certData] = await Promise.all([
+        booksRes.json(),
+        readingsRes.json(),
+        certRes.json()
+      ])
+
+      setBooks(booksData)
+
+      const status: Record<string, boolean> = {}
+      const memoData: Record<string, string> = {}
+      for (const log of readingsData) {
+        status[log.bookId] = true
+        if (log.memo) memoData[log.bookId] = log.memo
+      }
+      setTodayReadingStatus(status)
+      setMemos(memoData)
+
+      if (certData.text) {
+        setCertText(certData.text)
+      }
+
+      currentDateRef.current = todayKST
+    } catch (err) {
+      console.error('Failed to fetch data:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [includeMemo])
+
   useEffect(() => {
     if (status !== 'authenticated') return
 
-    async function fetchData() {
-      try {
-        const today = new Date().toISOString().split('T')[0]
-
-        const [booksRes, readingsRes, certRes] = await Promise.all([
-          fetch('/api/books'),
-          fetch('/api/readings?date=' + today),
-          fetch('/api/certification?includeMemo=' + includeMemo)
-        ])
-
-        const [booksData, readingsData, certData] = await Promise.all([
-          booksRes.json(),
-          readingsRes.json(),
-          certRes.json()
-        ])
-
-        setBooks(booksData)
-
-        const status: Record<string, boolean> = {}
-        const memoData: Record<string, string> = {}
-        for (const log of readingsData) {
-          status[log.bookId] = true
-          if (log.memo) memoData[log.bookId] = log.memo
-        }
-        setTodayReadingStatus(status)
-        setMemos(memoData)
-
-        if (certData.text) {
-          setCertText(certData.text)
-        }
-      } catch (err) {
-        console.error('Failed to fetch data:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchData()
-  }, [status, includeMemo])
+
+    const interval = setInterval(() => {
+      const todayKST = getKSTDate()
+      if (todayKST !== currentDateRef.current) {
+        fetchData()
+      }
+    }, 60000)
+
+    return () => clearInterval(interval)
+  }, [status, includeMemo, fetchData])
 
   async function handleReadingComplete(bookId: string, startPage: number, endPage: number) {
-    const today = new Date().toISOString().split('T')[0]
+    const todayKST = getKSTDate()
     const memo = memos[bookId] || ''
 
     try {
       const res = await fetch('/api/readings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bookId, date: today, startPage, endPage, memo }),
+        body: JSON.stringify({ bookId, date: todayKST, startPage, endPage, memo }),
       })
 
       if (res.ok) {
