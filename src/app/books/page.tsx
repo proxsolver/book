@@ -17,7 +17,7 @@ function getKSTToday() {
     const now = new Date()
     const utc = now.getTime() + now.getTimezoneOffset() * 60000
     const kst = new Date(utc + 540 * 60000)
-    kst.setHours(0, 0, 0, 0)
+    kst.setUTCHours(0, 0, 0, 0)
     return kst
 }
 

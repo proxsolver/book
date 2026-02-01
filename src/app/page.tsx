@@ -14,21 +14,23 @@ interface Book {
   readingLogs: { id: string; date: string; startPage: number; endPage: number; memo: string | null }[]
 }
 
-function getKSTDate() {
+// Client-side KST date functions
+function getKSTDateOnly() {
   const now = new Date()
   const utc = now.getTime() + now.getTimezoneOffset() * 60000
-  const kst = new Date(utc + 540 * 60000)
-  return kst
+  const kst = new Date(utc + 540 * 60000) // UTC+9
+  const year = kst.getUTCFullYear()
+  const month = String(kst.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(kst.getUTCDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
 
 function getKSTToday() {
-  const kst = getKSTDate()
-  kst.setHours(0, 0, 0, 0)
+  const now = new Date()
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000
+  const kst = new Date(utc + 540 * 60000)
+  kst.setUTCHours(0, 0, 0, 0)
   return kst
-}
-
-function getKSTDateOnly() {
-  return getKSTToday().toISOString().split('T')[0]
 }
 
 export default function HomePage() {
