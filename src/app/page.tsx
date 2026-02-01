@@ -44,35 +44,48 @@ export default function HomePage() {
   }, [status, router])
 
   useEffect(() => {
-    async function fetchBooks() {
-      try {
-        const res = await fetch('/api/books')
-        const data = await res.json()
-        setBooks(data)
+    if (status !== 'authenticated') return
 
+    async function fetchData() {
+      try {
         const today = new Date().toISOString().split('T')[0]
-        const res2 = await fetch('/api/readings?date=' + today)
-        const logs = await res2.json()
+
+        // 병렬로 모든 API 호출
+        const [booksRes, readingsRes, certRes] = await Promise.all([
+          fetch('/api/books'),
+          fetch('/api/readings?date=' + today),
+          fetch('/api/certification?includeMemo=' + includeMemo)
+        ])
+
+        const [booksData, readingsData, certData] = await Promise.all([
+          booksRes.json(),
+          readingsRes.json(),
+          certRes.json()
+        ])
+
+        setBooks(booksData)
+
         const status: Record<string, boolean> = {}
         const memoData: Record<string, string> = {}
-        for (const log of logs) {
+        for (const log of readingsData) {
           status[log.bookId] = true
           if (log.memo) memoData[log.bookId] = log.memo
         }
         setTodayReadingStatus(status)
         setMemos(memoData)
+
+        if (certData.text) {
+          setCertText(certData.text)
+        }
       } catch (err) {
-        console.error('Failed to fetch books:', err)
+        console.error('Failed to fetch data:', err)
       } finally {
         setLoading(false)
       }
     }
 
-    if (status === 'authenticated') {
-      fetchBooks()
-      fetchCertification()
-    }
-  }, [status, fetchCertification])
+    fetchData()
+  }, [status, includeMemo])
 
   async function handleReadingComplete(bookId: string, startPage: number, endPage: number) {
     const today = new Date().toISOString().split('T')[0]
@@ -87,7 +100,13 @@ export default function HomePage() {
 
       if (res.ok) {
         setTodayReadingStatus(prev => ({ ...prev, [bookId]: true }))
-        await fetchCertification()
+        
+        // 인증 텍스트만 다시 가져오기
+        const certRes = await fetch('/api/certification?includeMemo=' + includeMemo)
+        const certData = await certRes.json()
+        if (certData.text) {
+          setCertText(certData.text)
+        }
       }
     } catch (err) {
       console.error('Failed to save reading:', err)
