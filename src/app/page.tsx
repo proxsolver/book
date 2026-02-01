@@ -50,7 +50,6 @@ export default function HomePage() {
       try {
         const today = new Date().toISOString().split('T')[0]
 
-        // 병렬로 모든 API 호출
         const [booksRes, readingsRes, certRes] = await Promise.all([
           fetch('/api/books'),
           fetch('/api/readings?date=' + today),
@@ -100,12 +99,23 @@ export default function HomePage() {
 
       if (res.ok) {
         setTodayReadingStatus(prev => ({ ...prev, [bookId]: true }))
-        
-        // 인증 텍스트만 다시 가져오기
+
         const certRes = await fetch('/api/certification?includeMemo=' + includeMemo)
         const certData = await certRes.json()
         if (certData.text) {
           setCertText(certData.text)
+
+          if (session?.user?.id && session?.user?.name) {
+            fetch('/api/leaderboard', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: session.user.id,
+                userName: session.user.name,
+                certText: certData.text,
+              }),
+            }).catch(err => console.error('Failed to post to leaderboard:', err))
+          }
         }
       }
     } catch (err) {
@@ -223,6 +233,17 @@ export default function HomePage() {
               })}
             </div>
           )}
+        </section>
+
+        <section className="mb-6">
+          <div className="flex justify-center">
+            <button
+              onClick={() => router.push('/leaderboard')}
+              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
+            >
+              🏆 인증 리더보드
+            </button>
+          </div>
         </section>
 
         <section className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">

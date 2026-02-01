@@ -52,3 +52,13 @@ model ReadingLog {
   @@index([bookId])
   @@index([date])
 }
+
+model CertificationPost {
+  id        String   @id @default(cuid())
+  userId    String
+  userName  String
+  certText  String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
