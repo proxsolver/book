@@ -13,6 +13,14 @@ interface Book {
     isActive: boolean
 }
 
+function getKSTToday() {
+    const now = new Date()
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000
+    const kst = new Date(utc + 540 * 60000)
+    kst.setHours(0, 0, 0, 0)
+    return kst
+}
+
 export default function BooksPage() {
     const { status } = useSession()
     const router = useRouter()
@@ -80,8 +88,7 @@ export default function BooksPage() {
     }
 
     function getProgress(book: Book) {
-        const today = new Date()
-        today.setHours(0, 0, 0, 0)
+        const today = getKSTToday()
         const bookStart = new Date(book.startDate)
         bookStart.setHours(0, 0, 0, 0)
         const bookDays = Math.floor((today.getTime() - bookStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
