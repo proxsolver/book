@@ -18,7 +18,17 @@ function getKSTDate() {
   const now = new Date()
   const utc = now.getTime() + now.getTimezoneOffset() * 60000
   const kst = new Date(utc + 540 * 60000)
-  return kst.toISOString().split('T')[0]
+  return kst
+}
+
+function getKSTToday() {
+  const kst = getKSTDate()
+  kst.setHours(0, 0, 0, 0)
+  return kst
+}
+
+function getKSTDateOnly() {
+  return getKSTToday().toISOString().split('T')[0]
 }
 
 export default function HomePage() {
@@ -31,7 +41,7 @@ export default function HomePage() {
   const [memos, setMemos] = useState<Record<string, string>>({})
   const [includeMemo, setIncludeMemo] = useState(true)
   const [copied, setCopied] = useState(false)
-  const currentDateRef = useRef<string>(getKSTDate())
+  const currentDateRef = useRef<string>(getKSTDateOnly())
 
   const fetchCertification = useCallback(async () => {
     try {
@@ -53,7 +63,7 @@ export default function HomePage() {
 
   const fetchData = useCallback(async () => {
     try {
-      const todayKST = getKSTDate()
+      const todayKST = getKSTDateOnly()
 
       const [booksRes, readingsRes, certRes] = await Promise.all([
         fetch('/api/books'),
@@ -96,7 +106,7 @@ export default function HomePage() {
     fetchData()
 
     const interval = setInterval(() => {
-      const todayKST = getKSTDate()
+      const todayKST = getKSTDateOnly()
       if (todayKST !== currentDateRef.current) {
         fetchData()
       }
@@ -106,7 +116,7 @@ export default function HomePage() {
   }, [status, includeMemo, fetchData])
 
   async function handleReadingComplete(bookId: string, startPage: number, endPage: number) {
-    const todayKST = getKSTDate()
+    const todayKST = getKSTDateOnly()
     const memo = memos[bookId] || ''
 
     try {
@@ -153,8 +163,7 @@ export default function HomePage() {
   }
 
   function getTodayPages(book: Book) {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
+    const today = getKSTToday()
     const bookStart = new Date(book.startDate)
     bookStart.setHours(0, 0, 0, 0)
     const bookDays = Math.floor((today.getTime() - bookStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
