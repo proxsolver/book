@@ -138,6 +138,12 @@ export default function HomePage() {
           <div className="flex items-center gap-4">
             <span className="text-white/70">{session?.user?.name}</span>
             <button
+              onClick={() => router.push('/settings')}
+              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
+            >
+              ⚙️ 설정
+            </button>
+                        <button
               onClick={() => signOut()}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
             >
@@ -151,13 +157,25 @@ export default function HomePage() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-white">오늘 읽을 책</h2>
             <div className="flex gap-2">
-              <button
+            <button
+              onClick={() => router.push('/settings')}
+              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
+            >
+              ⚙️ 설정
+            </button>
+                          <button
                 onClick={() => router.push('/books')}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
               >
                 📋 책 관리
               </button>
-              <button
+            <button
+              onClick={() => router.push('/settings')}
+              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
+            >
+              ⚙️ 설정
+            </button>
+                          <button
                 onClick={() => router.push('/books/new')}
                 className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition shadow-lg"
               >
@@ -217,7 +235,13 @@ export default function HomePage() {
                     </div>
 
                     {/* Complete button */}
-                    <button
+            <button
+              onClick={() => router.push('/settings')}
+              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
+            >
+              ⚙️ 설정
+            </button>
+                                <button
                       onClick={() => handleReadingComplete(book.id, startPage, endPage)}
                       disabled={isCompleted}
                       className={`w-full py-3 rounded-lg font-semibold transition-all ${isCompleted
@@ -253,7 +277,13 @@ export default function HomePage() {
             {certText || '책을 추가하고 독서를 완료하면 인증 텍스트가 생성됩니다.'}
           </pre>
 
-          <button
+            <button
+              onClick={() => router.push('/settings')}
+              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
+            >
+              ⚙️ 설정
+            </button>
+                      <button
             onClick={copyToClipboard}
             className={`w-full py-3 rounded-lg font-semibold transition-all ${copied
               ? 'bg-green-500 text-white'

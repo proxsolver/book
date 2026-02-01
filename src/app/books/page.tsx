@@ -108,6 +108,12 @@ export default function BooksPage() {
                         <h1 className="text-2xl font-bold text-white">📚 책 관리</h1>
                     </div>
                     <button
+                        onClick={() => router.push('/settings')}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
+                    >
+                        ⚙️ 설정
+                    </button>
+                                        <button
                         onClick={() => router.push('/books/new')}
                         className="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition shadow-lg"
                     >
@@ -119,7 +125,13 @@ export default function BooksPage() {
                 {books.length === 0 ? (
                     <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 text-center border border-white/20">
                         <p className="text-white/70 mb-4">등록된 책이 없습니다.</p>
-                        <button
+                    <button
+                        onClick={() => router.push('/settings')}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
+                    >
+                        ⚙️ 설정
+                    </button>
+                                            <button
                             onClick={() => router.push('/books/new')}
                             className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg shadow-lg"
                         >
@@ -166,7 +178,13 @@ export default function BooksPage() {
 
                                     {/* Actions */}
                                     <div className="flex gap-2 justify-end">
-                                        <button
+                    <button
+                        onClick={() => router.push('/settings')}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
+                    >
+                        ⚙️ 설정
+                    </button>
+                                                            <button
                                             onClick={() => handleToggleActive(book.id, book.isActive)}
                                             className={`px-4 py-2 rounded-lg text-sm transition ${book.isActive
                                                     ? 'bg-white/10 text-white/70 hover:bg-white/20'
@@ -175,13 +193,25 @@ export default function BooksPage() {
                                         >
                                             {book.isActive ? '비활성화' : '활성화'}
                                         </button>
-                                        <button
+                    <button
+                        onClick={() => router.push('/settings')}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
+                    >
+                        ⚙️ 설정
+                    </button>
+                                                            <button
                                             onClick={() => router.push(`/books/${book.id}/edit`)}
                                             className="px-4 py-2 bg-white/10 text-white/70 hover:bg-white/20 rounded-lg text-sm transition"
                                         >
                                             수정
                                         </button>
-                                        <button
+                    <button
+                        onClick={() => router.push('/settings')}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition shadow-lg"
+                    >
+                        ⚙️ 설정
+                    </button>
+                                                            <button
                                             onClick={() => handleDelete(book.id, book.title)}
                                             className="px-4 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg text-sm transition"
                                         >
