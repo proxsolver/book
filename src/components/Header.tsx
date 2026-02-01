@@ -19,18 +19,17 @@ export default function Header() {
                     <span className="text-xl font-bold">📚 날두독서</span>
                 </Link>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                     <span className="text-white/70 text-sm hidden sm:inline">{session.user?.name}</span>
                     <button
                         onClick={() => router.push('/settings')}
-                        className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition"
-                        title="설정"
+                        className="px-3 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
                     >
-                        ⚙️
+                        ⚙️ 설정
                     </button>
                     <button
                         onClick={() => signOut()}
-                        className="px-3 py-1.5 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
+                        className="px-3 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
                     >
                         로그아웃
                     </button>
