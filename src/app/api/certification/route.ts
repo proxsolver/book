@@ -26,6 +26,11 @@ export async function GET(request: Request) {
         const today = getKSTToday()
         const tomorrow = getKSTTomorrow()
 
+        console.log('DEBUG certification:', {
+            today: today.toISOString(),
+            tomorrow: tomorrow.toISOString()
+        })
+
         const habitStartDate = new Date(user.habitStartDate)
         habitStartDate.setHours(0, 0, 0, 0)
         const totalDays = Math.floor((today.getTime() - habitStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1

@@ -25,14 +25,16 @@ export async function GET(request: Request) {
             const nextDate = new Date(targetDate)
             nextDate.setUTCDate(nextDate.getUTCDate() + 1)
 
+            console.log('DEBUG readings GET:', {
+                inputDate: date,
+                targetDate: targetDate.toISOString(),
+                nextDate: nextDate.toISOString()
+            })
+
             where.date = {
                 gte: targetDate,
                 lt: nextDate,
             }
-        }
-
-        if (bookId) {
-            where.bookId = bookId
         }
 
         const logs = await prisma.readingLog.findMany({
@@ -79,6 +81,11 @@ export async function POST(request: Request) {
         }
 
         const logDate = parseKSTDate(date)
+
+        console.log('DEBUG readings POST:', {
+            inputDate: date,
+            logDate: logDate.toISOString()
+        })
 
         const log = await prisma.readingLog.upsert({
             where: {
