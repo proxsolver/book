@@ -162,9 +162,9 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="p-8 bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20">
-                    <h2 className="text-2xl font-semibold text-white mb-6">계정</h2>
-                    <div className="space-y-4">
-                        <button onClick={() => signOut({ callbackUrl: '/login' })} className="w-full py-3 px-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg border border-white/20">로그아웃</button>
+                    <h2 className="text-2xl font-semibold text-white mb-6">바로가기</h2>
+                    <div className="space-y-2">
+                        
                         <a href="/books" className="block w-full py-3 px-4 text-center text-white/70 hover:text-white rounded-lg border border-white/20 hover:bg-white/5">독서 기록으로 돌아가기</a>
                     </div>
                 </div>

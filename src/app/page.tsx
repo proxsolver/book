@@ -132,25 +132,6 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">📚 날두독서</h1>
-          <div className="flex items-center gap-4">
-            <span className="text-white/70">{session?.user?.name}</span>
-            <button
-              onClick={() => router.push('/settings')}
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
-            >
-              ⚙️ 설정
-            </button>
-                        <button
-              onClick={() => signOut()}
-              className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition"
-            >
-              로그아웃
-            </button>
-          </div>
-        </header>
 
         {/* Today's Reading */}
         <section className="mb-8">
@@ -158,7 +139,6 @@ export default function HomePage() {
             <h2 className="text-xl font-semibold text-white">오늘 읽을 책</h2>
             <div className="flex gap-2">
             <button
-              onClick={() => router.push('/settings')}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
             >
               ⚙️ 설정
@@ -170,7 +150,6 @@ export default function HomePage() {
                 📋 책 관리
               </button>
             <button
-              onClick={() => router.push('/settings')}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
             >
               ⚙️ 설정
@@ -236,7 +215,6 @@ export default function HomePage() {
 
                     {/* Complete button */}
             <button
-              onClick={() => router.push('/settings')}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
             >
               ⚙️ 설정
@@ -278,7 +256,6 @@ export default function HomePage() {
           </pre>
 
             <button
-              onClick={() => router.push('/settings')}
               className="px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition mr-2"
             >
               ⚙️ 설정
