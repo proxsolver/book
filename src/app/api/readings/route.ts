@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
-import { getKSTToday, getKSTTomorrow, getKSTDateOnly } from '@/lib/date'
+import { getKSTToday, getKSTTomorrow, parseKSTDate } from '@/lib/date'
 
 export async function GET(request: Request) {
     const session = await getServerSession(authOptions)
@@ -21,10 +21,9 @@ export async function GET(request: Request) {
         }
 
         if (date) {
-            const targetDate = new Date(date)
-            targetDate.setHours(0, 0, 0, 0)
+            const targetDate = parseKSTDate(date)
             const nextDate = new Date(targetDate)
-            nextDate.setDate(nextDate.getDate() + 1)
+            nextDate.setUTCDate(nextDate.getUTCDate() + 1)
 
             where.date = {
                 gte: targetDate,
@@ -79,8 +78,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: '책을 찾을 수 없습니다.' }, { status: 404 })
         }
 
-        const logDate = new Date(date)
-        logDate.setHours(0, 0, 0, 0)
+        const logDate = parseKSTDate(date)
 
         const log = await prisma.readingLog.upsert({
             where: {
