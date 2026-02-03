@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
+import { parseKSTDate } from '@/lib/date'
 
 interface RouteParams {
     params: Promise<{ id: string }>
@@ -68,7 +69,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
             where: { id },
             data: {
                 ...(title && { title }),
-                ...(startDate && { startDate: new Date(startDate) }),
+                ...(startDate && { startDate: parseKSTDate(startDate) }),
                 ...(startPage !== undefined && { startPage: Number(startPage) }),
                 ...(totalPages && { totalPages: Number(totalPages) }),
                 ...(isActive !== undefined && { isActive }),

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
+import { parseKSTDate } from '@/lib/date'
 
 // 사용자의 모든 책 조회
 export async function GET() {
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
             data: {
                 userId: session.user.id,
                 title,
-                startDate: new Date(startDate),
+                startDate: parseKSTDate(startDate),  // KST 날짜를 UTC로 변환하여 저장
                 startPage: Number(startPage),
                 totalPages: Number(totalPages),
             },

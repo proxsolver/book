@@ -4,6 +4,17 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+// Client-side KST date function
+function getKSTDateOnly() {
+    const now = new Date()
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000
+    const kst = new Date(utc + 540 * 60000) // UTC+9
+    const year = kst.getUTCFullYear()
+    const month = String(kst.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(kst.getUTCDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+}
+
 export default function NewBookPage() {
     const router = useRouter()
     const [error, setError] = useState('')
@@ -41,7 +52,7 @@ export default function NewBookPage() {
         }
     }
 
-    const today = new Date().toISOString().split('T')[0]
+    const today = getKSTDateOnly()  // KST 기준 오늘 날짜
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">

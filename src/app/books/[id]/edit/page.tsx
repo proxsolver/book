@@ -14,6 +14,15 @@ interface Book {
     isActive: boolean
 }
 
+// KST Date 객체를 YYYY-MM-DD 문자열로 변환
+function formatKSTDateOnly(date: Date): string {
+    const kstDate = new Date(date.getTime() + 540 * 60000)  // UTC+9
+    const year = kstDate.getUTCFullYear()
+    const month = String(kstDate.getUTCMonth() + 1).padStart(2, '0')
+    const day = String(kstDate.getUTCDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+}
+
 export default function EditBookPage() {
     const { status } = useSession()
     const router = useRouter()
@@ -112,7 +121,7 @@ export default function EditBookPage() {
         )
     }
 
-    const startDate = new Date(book.startDate).toISOString().split('T')[0]
+    const startDate = formatKSTDateOnly(new Date(book.startDate))  // KST 기준으로 변환
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-8 px-4">

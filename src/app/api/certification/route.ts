@@ -31,9 +31,23 @@ export async function GET(request: Request) {
             tomorrow: tomorrow.toISOString()
         })
 
-        const habitStartDate = new Date(user.habitStartDate)
-        habitStartDate.setHours(0, 0, 0, 0)
-        const totalDays = Math.floor((today.getTime() - habitStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+        // habitStartDate는 DB에서 가져온 Date 객체 (이미 KST 자정을 나타내는 UTC 시간)
+        // 시간 정보를 명확히 하기 위해 UTC 기준 0시로 설정 후 9시간 뺌
+        const habitStartDate = user.habitStartDate
+        const utcHabitStart = new Date(Date.UTC(
+            habitStartDate.getUTCFullYear(),
+            habitStartDate.getUTCMonth(),
+            habitStartDate.getUTCDate(),
+            0, 0, 0
+        ))
+        utcHabitStart.setTime(utcHabitStart.getTime() - 540 * 60000)
+        const totalDays = Math.floor((today.getTime() - utcHabitStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
+
+        console.log('DEBUG certification days:', {
+            habitStartOriginal: habitStartDate.toISOString(),
+            habitStartAdjusted: utcHabitStart.toISOString(),
+            totalDays
+        })
 
         const books = await prisma.book.findMany({
             where: {
@@ -60,9 +74,23 @@ export async function GET(request: Request) {
         let memoText = ''
 
         for (const book of books) {
-            const bookStartDate = new Date(book.startDate)
-            bookStartDate.setHours(0, 0, 0, 0)
-            const bookDays = Math.floor((today.getTime() - bookStartDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
+            // book.startDate도 DB에서 가져온 Date 객체
+            const bookStartDate = book.startDate
+            const utcBookStart = new Date(Date.UTC(
+                bookStartDate.getUTCFullYear(),
+                bookStartDate.getUTCMonth(),
+                bookStartDate.getUTCDate(),
+                0, 0, 0
+            ))
+            utcBookStart.setTime(utcBookStart.getTime() - 540 * 60000)
+            const bookDays = Math.floor((today.getTime() - utcBookStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
+
+            console.log('DEBUG book days:', {
+                bookTitle: book.title,
+                startDateOriginal: book.startDate.toISOString(),
+                startDateAdjusted: utcBookStart.toISOString(),
+                bookDays
+            })
 
             const log = book.readingLogs[0]
             if (log) {

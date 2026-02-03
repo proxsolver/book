@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { hash } from 'bcryptjs'
 import { prisma } from '@/lib/prisma'
+import { parseKSTDate } from '@/lib/date'
 
 export async function POST(request: Request) {
     try {
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
                 email,
                 password: hashedPassword,
                 name,
-                habitStartDate: new Date(habitStartDate),
+                habitStartDate: parseKSTDate(habitStartDate),  // KST 날짜를 UTC로 변환하여 저장
             },
         })
 

@@ -27,10 +27,35 @@ function getKSTDateOnly() {
 
 function getKSTToday() {
   const now = new Date()
-  const utc = now.getTime() + now.getTimezoneOffset() * 60000
-  const kst = new Date(utc + 540 * 60000)
-  kst.setUTCHours(0, 0, 0, 0)
-  return kst
+  const utcTimestamp = now.getTime() + now.getTimezoneOffset() * 60000
+  const kstTimestamp = utcTimestamp + 540 * 60000
+  const kstDate = new Date(kstTimestamp)
+
+  // KST 자정을 UTC로 표현 (KST 2026-02-03 00:00:00 = UTC 2026-02-02 15:00:00)
+  const result = new Date(Date.UTC(
+    kstDate.getUTCFullYear(),
+    kstDate.getUTCMonth(),
+    kstDate.getUTCDate(),
+    0, 0, 0
+  ))
+  // UTC에서 9시간 빼기
+  result.setTime(result.getTime() - 540 * 60000)
+
+  console.log('DEBUG getKSTToday:', {
+    localNow: now.toISOString(),
+    kstDate: kstDate.toISOString(),
+    resultISO: result.toISOString()
+  })
+
+  return result
+}
+
+// KST 날짜 문자열을 KST 자정을 나타내는 UTC Date로 변환
+function parseKSTDate(dateStr: string) {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const result = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
+  result.setTime(result.getTime() - 540 * 60000)
+  return result
 }
 
 export default function HomePage() {
@@ -166,8 +191,17 @@ export default function HomePage() {
 
   function getTodayPages(book: Book) {
     const today = getKSTToday()
-    const bookStart = new Date(book.startDate)
-    bookStart.setHours(0, 0, 0, 0)
+    const bookStart = parseKSTDate(book.startDate)  // KST로 파싱
+
+    console.log('DEBUG getTodayPages:', {
+      bookTitle: book.title,
+      bookStartDate: book.startDate,
+      todayISO: today.toISOString(),
+      bookStartISO: bookStart.toISOString(),
+      timeDiff: today.getTime() - bookStart.getTime(),
+      bookDays: Math.floor((today.getTime() - bookStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
+    })
+
     const bookDays = Math.floor((today.getTime() - bookStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
     const startPage = book.startPage + (bookDays - 1) * 2
     const endPage = startPage + 1
