@@ -1,0 +1,5 @@
+{
+  "name": "날두독서 관리 프로그램 (Nal-Du Reading)",
+  "description": "매일의 독서 습관을 관리하고 진행 상황을 클립보드에 복사할 수 있는 독서 관리 도구입니다.",
+  "requestFramePermissions": []
+}
